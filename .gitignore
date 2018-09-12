@@ -1,0 +1,9 @@
+/target/
+.project
+.classpath
+.idea/
+.settings/
+surefire-reports/
+/.DS_Store
+nationwide-automated-test.iml
+/Reports/
