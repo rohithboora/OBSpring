@@ -1,6 +1,8 @@
 package uk.co.nationwide.nbs.test.infrastructure.steps;
 
 import com.google.gson.Gson;
+
+import io.restassured.http.Header;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import net.minidev.json.JSONObject;
@@ -58,6 +60,8 @@ public class TestExecutionContext {
     private ValidatableResponse setResponseSpecification;
     private Map<String, Object> requestBodyPayload = new HashMap<>();
     private JSONObject requestBodyPayloadJson;
+    //header var
+    private Header header;
     private String artiJsonFile = "";
     private static DesiredCapabilities Caps;
     private DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -159,7 +163,8 @@ public class TestExecutionContext {
     public void addHttpRequestBody(Object value) {
         this.requestBodyPayload = new Gson().fromJson((String) value, Map.class);
     }
-
+  
+    
     public void addHttpRequestBodyParameterJson(JSONObject value) {
         this.requestBodyPayloadJson = value;
     }
@@ -185,4 +190,14 @@ public class TestExecutionContext {
     public JSONObject getRequestBodyPayloadJson() {
         return requestBodyPayloadJson;
     }
+
+    //method to get header value
+	public Header getHeader() {
+		return header;
+	}
+
+	//method to set header value
+	public void setHeader(Header header) {
+		this.header = header;
+	}
 }

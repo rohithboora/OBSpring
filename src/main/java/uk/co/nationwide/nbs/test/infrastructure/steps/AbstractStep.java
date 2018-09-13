@@ -1,6 +1,7 @@
 package uk.co.nationwide.nbs.test.infrastructure.steps;
 
 import io.restassured.RestAssured;
+import io.restassured.http.Header;
 import io.restassured.response.ValidatableResponse;
 import net.minidev.json.JSONObject;
 import org.openqa.selenium.Platform;
@@ -135,9 +136,9 @@ public abstract class AbstractStep {
     }
     
     //method to add header data to request
-    public void defineHttpHeader(String name, Object value) {
-        io.restassured.specification.RequestSpecification requestSpecification = testExecutionContext.getHttpRequestSpecification();
-        requestSpecification.headers(name,value);
+    public void defineHttpHeader(String name, String value) {
+    	Header head = new Header(name,value);
+    	testExecutionContext.setHeader(head);
     }
 
 
@@ -158,6 +159,12 @@ public abstract class AbstractStep {
     public String getOauthUrl() {
         return this.testExecutionContext.getOauthUrl();
     }
+    
+    //added get header
+    public Header getHeader() {
+        return this.testExecutionContext.getHeader();
+    }
+    
 
     public void setResponseSpecification(ValidatableResponse validatableResponse) {
         this.testExecutionContext.setResponseSpecification(validatableResponse);

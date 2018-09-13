@@ -1,5 +1,6 @@
 package uk.co.nationwide.nbs.test.infrastructure.steps.api;
 
+import cucumber.api.DataTable;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -20,6 +21,8 @@ import org.hamcrest.MatcherAssert.*;
 import org.hamcrest.Matchers;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+
+import java.util.List;
 
 import uk.co.nationwide.nbs.test.infrastructure.enums.DataTypes;
 import uk.co.nationwide.nbs.test.infrastructure.enums.HttpRequestNames;
@@ -112,6 +115,46 @@ public class ApiSteps extends AbstractStep {
                 throw new IllegalArgumentException("HTTP Request name is incorrect");
         }
     }
+    
+    /*
+     *Added this method so we can pass body request an array
+     */
+    
+    @When("^\"([^\"]*)\" request is sent as$")
+    public void request_is_sent(String method, DataTable type)  {
+        JSONArray arrayObject = new JSONArray();
+        arrayObject.add(this.getHttpRequestBodyPayloadJson());
+        logger.info(arrayObject);
+        List<String> list = type.asList(String.class);
+        String call = list.get(0);
+        switch (method) {
+            case "POST":
+            	logger.info("The header value is "+this.getHeader().toString());
+            	if(call.equalsIgnoreCase("JSON")) {
+            		this.response = given().relaxedHTTPSValidation().header(this.getHeader()).contentType("application/json;charset=UTF-16").body(this.getHttpRequestBodyPayloadJson())
+            				.when().post(this.getHttpUrl())
+                            .then().extract().response();
+            	}else {
+            		 this.response = given().relaxedHTTPSValidation().contentType("application/json;charset=UTF-16").body(arrayObject)
+                        .when().post(this.getHttpUrl())
+                        .then().extract().response();
+                this.jsonString = response.asString();
+                this.jsonResponse = response.jsonPath();
+            	}
+                break;
+            case "GET":
+                this.response = requestSpecification().when().get(this.getHttpUrl()).then().extract().response();
+                this.jsonResponse = this.response.jsonPath();
+                break;
+            case "DELETE":
+                this.response = requestSpecification().when().delete(this.getHttpUrl()).then().extract().response();
+                this.jsonResponse = this.response.jsonPath();
+                break;
+            default:
+                throw new IllegalArgumentException("HTTP Request name is incorrect");
+        }
+    }
+    
 
     @Then("^the status code will be \"([^\"]*)\"$")
     public void the_status_code_will_be(int statusCode) {

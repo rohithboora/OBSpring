@@ -59,6 +59,6 @@
 	"retrieve audits":"api/mi/retrieveAllAudit?dateFrom={dateFrom}&dateTo={dateTo}",
 	"mailer Service":"api/sendMail/resetPassword",
 	"health check":"api/healthCheck",
-	"post user":"v1/api/user",
-	"get user":"v1/api/user?customerNumber={customerNumber}&channelId={channelid}"
+	"post user":"api/user",
+	"get user":"v1/user?customerNumber={customerNumber}&channelId={channelid}"
 }
