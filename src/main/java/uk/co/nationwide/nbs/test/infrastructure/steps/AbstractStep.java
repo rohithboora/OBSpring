@@ -24,172 +24,188 @@ import java.util.concurrent.TimeUnit;
 @ContextConfiguration(classes = Application.class)
 public abstract class AbstractStep {
 
-    private static Platform currentPlatform = Platform.getCurrent();
-    public String testDataPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test" + File.separator + "resources" + File.separator + "testdata" + File.separator;
-    @Value("${test.webdriver.default.browser}")
-    protected String defaultBrowser;
-    WebDriver driver;
-    @Value("${test.environment.endpoint}")
-    private String endpoint;
-    @Value("${test.webdriver.gecko.driver}")
-    private String firefoxWebDriverPath;
-    @Value("${test.webdriver.chrome.driver}")
-    private String chromeDriverPath;
-    @Value("${test.webdriver.macgecko.driver}")
-    private String firefoxWebDriverMacPath;
-    @Value("${test.webdriver.macchrome.driver}")
-    private String chromeDriverMacPath;
-    @Value("${test.webdriver.safari.driver}")
-    private String safariDriverPath;
-    @Value("${test.webdriver.sauce.driver}")
-    private String sauceDriverPath;
-    @Autowired(required = false)
-    private TestExecutionContext testExecutionContext;
+	private static Platform currentPlatform = Platform.getCurrent();
+	public String testDataPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+			+ File.separator + "resources" + File.separator + "testdata" + File.separator;
+	@Value("${test.webdriver.default.browser}")
+	protected String defaultBrowser;
+	WebDriver driver;
+	@Value("${test.environment.endpoint}")
+	private String endpoint;
+	@Value("${test.webdriver.gecko.driver}")
+	private String firefoxWebDriverPath;
+	@Value("${test.webdriver.chrome.driver}")
+	private String chromeDriverPath;
+	@Value("${test.webdriver.macgecko.driver}")
+	private String firefoxWebDriverMacPath;
+	@Value("${test.webdriver.macchrome.driver}")
+	private String chromeDriverMacPath;
+	@Value("${test.webdriver.safari.driver}")
+	private String safariDriverPath;
+	@Value("${test.webdriver.sauce.driver}")
+	private String sauceDriverPath;
+	@Autowired(required = false)
+	private TestExecutionContext testExecutionContext;
 
-    public String getTestDataPath() {
-        return testDataPath;
-    }
+	public String getTestDataPath() {
+		return testDataPath;
+	}
 
-    public void setTestDataPath(String testDataPath) {
-        this.testDataPath = testDataPath;
-    }
+	public void setTestDataPath(String testDataPath) {
+		this.testDataPath = testDataPath;
+	}
 
-    //check prop file to get default browser
-    void configureWebDriver() {
-        switch (defaultBrowser) {
-            case "firefox":
-                if (currentPlatform.toString().equals("MAC")) {
-                    driver = WebDriverPicker.fromAlias(defaultBrowser).getDriver(firefoxWebDriverMacPath);
-                } else {
-                    driver = WebDriverPicker.fromAlias(defaultBrowser).getDriver(firefoxWebDriverPath);
-                }
-                break;
-            case "chrome":
-                if (currentPlatform.toString().equals("MAC")) {
-                    driver = WebDriverPicker.fromAlias(defaultBrowser).getDriver(chromeDriverMacPath);
-                } else {
-                    System.out.println(currentPlatform);
-                    driver = WebDriverPicker.fromAlias(defaultBrowser).getDriver(chromeDriverPath);
-                }
-                break;
-            case "safari":
-                driver = WebDriverPicker.fromAlias(defaultBrowser).getDriver(chromeDriverMacPath);
-                System.out.println(currentPlatform);
-                break;
-            case "sauce":
-                System.out.println(currentPlatform);
-                driver = WebDriverPicker.fromAlias(defaultBrowser).getDriver(sauceDriverPath);
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported value for: defaultBrowser");
-        }
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        testExecutionContext.setDriver(driver);
-    }
+	// check prop file to get default browser
+	void configureWebDriver() {
+		switch (defaultBrowser) {
+		case "firefox":
+			if (currentPlatform.toString().equals("MAC")) {
+				driver = WebDriverPicker.fromAlias(defaultBrowser).getDriver(firefoxWebDriverMacPath);
+			} else {
+				driver = WebDriverPicker.fromAlias(defaultBrowser).getDriver(firefoxWebDriverPath);
+			}
+			break;
+		case "chrome":
+			if (currentPlatform.toString().equals("MAC")) {
+				driver = WebDriverPicker.fromAlias(defaultBrowser).getDriver(chromeDriverMacPath);
+			} else {
+				System.out.println(currentPlatform);
+				driver = WebDriverPicker.fromAlias(defaultBrowser).getDriver(chromeDriverPath);
+			}
+			break;
+		case "safari":
+			driver = WebDriverPicker.fromAlias(defaultBrowser).getDriver(chromeDriverMacPath);
+			System.out.println(currentPlatform);
+			break;
+		case "sauce":
+			System.out.println(currentPlatform);
+			driver = WebDriverPicker.fromAlias(defaultBrowser).getDriver(sauceDriverPath);
+			break;
+		default:
+			throw new IllegalArgumentException("Unsupported value for: defaultBrowser");
+		}
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		testExecutionContext.setDriver(driver);
+	}
 
-    public void configureHttpClient() {
-        testExecutionContext.setHttpRequestSpecification(RestAssured.given().relaxedHTTPSValidation());
-    }
+	public void configureHttpClient() {
+		testExecutionContext.setHttpRequestSpecification(RestAssured.given().relaxedHTTPSValidation());
+	}
 
-    public void declareApplicationUnderTest(String application) {
-        this.testExecutionContext.setApplication(application);
-    }
+	public void declareApplicationUnderTest(String application) {
+		this.testExecutionContext.setApplication(application);
+	}
 
-    public void declareApplicationAndSectionUnderTest(String application, String section) {
-        this.testExecutionContext.setApplication(application);
-        this.testExecutionContext.setSection(section);
-    }
+	public void declareApplicationAndSectionUnderTest(String application, String section) {
+		this.testExecutionContext.setApplication(application);
+		this.testExecutionContext.setSection(section);
+	}
 
-    public void declareSectionUnderTest(String section) {
-        this.testExecutionContext.setSection(section);
-    }
+	public void declareSectionUnderTest(String section) {
+		this.testExecutionContext.setSection(section);
+	}
 
-    WebDriver getDriver() {
-        return this.testExecutionContext.getDriver();
-    }
+	WebDriver getDriver() {
+		return this.testExecutionContext.getDriver();
+	}
 
+	Page getPage() {
+		return this.testExecutionContext.getPage();
+	}
 
-    Page getPage() {
-        return this.testExecutionContext.getPage();
-    }
+	PageFactory getPageFactory() {
+		return this.testExecutionContext.getPageFactory();
+	}
 
-    PageFactory getPageFactory() {
-        return this.testExecutionContext.getPageFactory();
-    }
-//    Deprecated
-//    public void defineHttpParameter(String name, String placement, Object value) {
-//        io.restassured.specification.RequestSpecification requestSpecification = testExecutionContext.getHttpRequestSpecification();
-//        if ("path".equalsIgnoreCase(placement)) {
-//            requestSpecification.pathParam(name, value);
-//        } else if ("header".equalsIgnoreCase(placement)) {
-//            requestSpecification.header(name, value);
-//        } else if ("payload".equalsIgnoreCase(placement)) {
-//            testExecutionContext.addHttpRequestBodyParameter(name, value);
-//        } else if ("payload-json".equalsIgnoreCase(placement)) {
-//            testExecutionContext.addHttpRequestBody(value);
-//        }
-//    }
+	// Deprecated
+//	public void defineHttpParameter(String name, String placement, Object value) {
+//		io.restassured.specification.RequestSpecification requestSpecification = testExecutionContext
+//				.getHttpRequestSpecification();
+//		if ("path".equalsIgnoreCase(placement)) {
+//			requestSpecification.pathParam(name, value);
+//		} else if ("header".equalsIgnoreCase(placement)) {
+//			requestSpecification.header(name, value);
+//		} else if ("payload".equalsIgnoreCase(placement)) {
+//			testExecutionContext.addHttpRequestBodyParameter(name, value);
+//		} else if ("payload-json".equalsIgnoreCase(placement)) {
+//			testExecutionContext.addHttpRequestBody(value);
+//		}
+//	}
 
-    public void defineHttpParameter(String name, Object value) {
-        io.restassured.specification.RequestSpecification requestSpecification = testExecutionContext.getHttpRequestSpecification();
-        requestSpecification.pathParam(name, value);
-    }
-    
-    //method to add header data to request
-    public void defineHttpHeader(String name, String value) {
-    	Header head = new Header(name,value);
-    	testExecutionContext.setHeader(head);
-    }
+	public void defineHttpParameter(String name, Object value) {
+		io.restassured.specification.RequestSpecification requestSpecification = testExecutionContext
+				.getHttpRequestSpecification();
+		requestSpecification.pathParam(name, value);
+	}
 
+	/*
+	 * Define Header values
+	 * -GET/SET Channel Header 
+	 * -GET/SET Auth Header
+	 */
 
-    public void defineHttpParameterJson(JSONObject value) {
-        io.restassured.specification.RequestSpecification requestSpecification = testExecutionContext
-                .getHttpRequestSpecification();
-        testExecutionContext.addHttpRequestBodyParameterJson(value);
-    }
+	// method to add header data to request
+	public void setChannelHeader(Header header) {
+		testExecutionContext.setChannelHeader(header);
+	}
 
-    public io.restassured.specification.RequestSpecification requestSpecification() {
-        return this.testExecutionContext.getHttpRequestSpecification();
-    }
+	// method to set basic authentication
+	public void setAuthHeader(Header header) {
+		testExecutionContext.setAuthHeader(header);
 
-    public String getHttpUrl() {
-        return this.testExecutionContext.getHttpUrl();
-    }
+	}
 
-    public String getOauthUrl() {
-        return this.testExecutionContext.getOauthUrl();
-    }
-    
-    //added get header
-    public Header getHeader() {
-        return this.testExecutionContext.getHeader();
-    }
-    
+	// gets the channel header value from TestExecution and returns the value
+	public Header getChannelHeader() {
+		return this.testExecutionContext.getChannelHeader();
+	}
 
-    public void setResponseSpecification(ValidatableResponse validatableResponse) {
-        this.testExecutionContext.setResponseSpecification(validatableResponse);
-    }
+	// gets the basic auth code header value from TestExecution and returns the value
+	public Header getAuthHeader() {
+		return this.testExecutionContext.getAuthHeader();
+	}
 
-    public ValidatableResponse responseSpecification() {
-        return this.testExecutionContext.getResponseSpecification();
-    }
+	public void defineHttpParameterJson(JSONObject value) {
+		io.restassured.specification.RequestSpecification requestSpecification = testExecutionContext
+				.getHttpRequestSpecification();
+		testExecutionContext.addHttpRequestBodyParameterJson(value);
+	}
 
-    public Map<String, Object> getHttpRequestBodyPayload() {
-        return this.testExecutionContext.getHttpRequestBodyPayload();
-    }
+	public io.restassured.specification.RequestSpecification requestSpecification() {
+		return this.testExecutionContext.getHttpRequestSpecification();
+	}
 
-    public JSONObject getHttpRequestBodyPayloadJson() {
-        return this.testExecutionContext.getRequestBodyPayloadJson();
-    }
+	public String getHttpUrl() {
+		return this.testExecutionContext.getHttpUrl();
+	}
 
-    public String getDataSetFromTestExecution() {
-        return this.testExecutionContext.getArtiJsonFile();
-    }
+	public String getOauthUrl() {
+		return this.testExecutionContext.getOauthUrl();
+	}
 
-    public void setDataSetFromTestExecution(String json) {
+	public void setResponseSpecification(ValidatableResponse validatableResponse) {
+		this.testExecutionContext.setResponseSpecification(validatableResponse);
+	}
 
-        this.testExecutionContext.setArtiJsonFile(json);
+	public ValidatableResponse responseSpecification() {
+		return this.testExecutionContext.getResponseSpecification();
+	}
 
-    }
+	public Map<String, Object> getHttpRequestBodyPayload() {
+		return this.testExecutionContext.getHttpRequestBodyPayload();
+	}
+
+	public JSONObject getHttpRequestBodyPayloadJson() {
+		return this.testExecutionContext.getRequestBodyPayloadJson();
+	}
+
+	public String getDataSetFromTestExecution() {
+		return this.testExecutionContext.getArtiJsonFile();
+	}
+
+	public void setDataSetFromTestExecution(String json) {
+
+		this.testExecutionContext.setArtiJsonFile(json);
+
+	}
 }
-

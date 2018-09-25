@@ -1,87 +1,98 @@
 {
-  "definitions": {},
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "http://example.com/root.json",
-  "type": "object",
-  "title": "The Root Schema",
-  "required": [
-    "userId",
-    "firstName",
-    "lastName",
-    "email",
-    "channelId",
-    "status"
-  ],
-  "properties": {
-    "userId": {
-      "$id": "#/properties/userId",
-      "type": "string",
-      "title": "The Userid Schema",
-      "default": "",
-      "examples": [
-        "string"
-      ],
-      "pattern": "^(.*)$"
-    },
-    "customerNumber": {
-      "$id": "#/properties/customerNumber",
-      "type": "string",
-      "title": "The Customernumber Schema",
-      "default": "",
-      "examples": [
-        "string"
-      ],
-      "pattern": "^(.*)$"
-    },
-    "firstName": {
-      "$id": "#/properties/firstName",
-      "type": "string",
-      "title": "The Firstname Schema",
-      "default": "",
-      "examples": [
-        "string"
-      ],
-      "pattern": "^(.*)$"
-    },
-    "lastName": {
-      "$id": "#/properties/lastName",
-      "type": "string",
-      "title": "The Lastname Schema",
-      "default": "",
-      "examples": [
-        "string"
-      ],
-      "pattern": "^(.*)$"
-    },
-    "email": {
-      "$id": "#/properties/email",
-      "type": "string",
-      "title": "The Email Schema",
-      "default": "",
-      "examples": [
-        "user@example.com"
-      ],
-      "pattern": "^(.*)$"
-    },
-    "channelId": {
-      "$id": "#/properties/channelId",
-      "type": "string",
-      "title": "The Channelid Schema",
-      "default": "",
-      "examples": [
-        "BANKING_APP"
-      ],
-      "pattern": "^(.*)$"
-    },
-    "status": {
-      "$id": "#/properties/status",
-      "type": "string",
-      "title": "The Status Schema",
-      "default": "",
-      "examples": [
-        "ACTIVE"
-      ],
-      "pattern": "^(.*)$"
-    }
-  }
+	"definitions": {
+		
+	},
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "http://example.com/root.json",
+	"type": "object",
+	"title": "The Root Schema",
+	"required": [
+		"userId",
+		"firstName",
+		"lastName",
+		"email",
+		"channelId",
+		"status"
+	],
+	"properties": {
+		"userId": {
+			"$id": "#/properties/userId",
+			"type": "string",
+			"title": "The Userid Schema",
+			"default": "",
+			"examples": [
+				"string"
+			],
+			"minLength": 7,
+			"maxLength": 14,
+			"pattern": "^(.*)$"
+		},
+		"customerNumber": {
+			"$id": "#/properties/customerNumber",
+			"type": "string",
+			"title": "The Customernumber Schema",
+			"default": "",
+			"examples": [
+				"string"
+			],
+			"minLength": 10,
+			"maxLength": 10,
+			"pattern": "^(.*)$"
+		},
+		"firstName": {
+			"$id": "#/properties/firstName",
+			"type": "string",
+			"title": "The Firstname Schema",
+			"default": "",
+			"examples": [
+				"test"
+			],
+			"minLength": 1,
+			"maxLength": 255,
+			"pattern": "^(.*)$"
+		},
+		"lastName": {
+			"$id": "#/properties/lastName",
+			"type": "string",
+			"title": "The Lastname Schema",
+			"default": "",
+			"examples": [
+				"string"
+			],
+			"minLength": 1,
+			"maxLength": 255,
+			"pattern": "^(.*)$"
+		},
+		"email": {
+			"$id": "#/properties/email",
+			"type": "string",
+			"title": "The Email Schema",
+			"default": "",
+			"examples": [
+				"user@example.com"
+			],
+			"maxLength": 2083,
+			"pattern": "^(.*)$"
+		},
+		"channelId": {
+			"$id": "#/properties/channelId",
+			"type": "string",
+			"title": "The Channelid Schema",
+			"default": "",
+			"examples": [
+				"BANKING_APP"
+			],
+			"pattern": "^(.*)$"
+		},
+		"status": {
+			"$id": "#/properties/status",
+			"type": "string",
+			"title": "The Status Schema",
+			"default": "",
+			"examples": [
+				"ACTIVE"
+			],
+			"pattern": "^(.*)$"
+		}
+	}
 }

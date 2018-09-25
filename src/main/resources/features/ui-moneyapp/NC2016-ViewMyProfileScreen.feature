@@ -46,6 +46,3 @@ Feature: UI-NC2016-view my profile Screen Validation
       | firstname |
       | surname   |
       | email     |
-    And A user should see the "firstname" field highlighted in "blue" on the "profile" page
-    And A user should see the "surname" field highlighted in "blue" on the "profile" page
-    Then A user should see the "email" field highlighted in "blue" on the "profile" page

@@ -1,4 +1,4 @@
-#Author: your.email@your.domain.com
+ #Author: your.email@your.domain.com
 #Keywords Summary :
 #Feature: List of scenarios.
 #Scenario: Business rule through list of steps with arguments.
@@ -16,10 +16,10 @@
 #""
 ## (Comments)
 #Sample Feature Definition Template
-@api
-Feature: verify 201 Response for POST user
+ @api
+ Feature: verify 200 Response for GET user
 
-  @severity=normal
+ @severity=normal
   @issue=NC-2838
   @happyCase
   Scenario: 201 Response when passing valid POST Banking App request
@@ -28,53 +28,32 @@ Feature: verify 201 Response for POST user
     When "customerNumber" is "1234565434" as STRING
     And "firstName" is "TestForename" as STRING
     And "lastName" is "TestSurname" as STRING
-    And "email" is "bankingappuser1000@test.com" as STRING
+    And "email" is "get200@test.com" as STRING
     And "channelId" is "BANKING_APP" as STRING
     And package prepared data
     And "POST" request is sent to user endpoint
     And the status code will be "201"
 
-  @severity=normal
-  @issue=NC-2838
-  @happyCase
-  Scenario: 201 Response when passing valid POST Money App request
-    Given a request to "post user" api on service "user microservice"
-    And "x-channel-id" header is "MONEY_APP"
-    And "firstName" is "TestForename" as STRING
-    And "lastName" is "TestSurname" as STRING
-    And "email" is "moneyappuser1000@test.com" as STRING
-    And "channelId" is "MONEY_APP" as STRING
-    And package prepared data
-    And "POST" request is sent to user endpoint
-    And the status code will be "201"
-
+   @severity=normal
+   @issue=NC-2845 @happyCase
+   Scenario: 200 Response when when passing a valid GET request
+     Given a request to "get user" api on service "user microservice"
+     And "x-channel-id" header is "BANKING_APP"
+     When "customerNumber" parameter is "1234565434"
+     When "channelId" parameter is "BANKING_APP"
+     And "GET" request is sent to user endpoint
+     And the status code will be "200"
+     
   @severity=normal
   @issue=NC-2838 @happyCase
-  Scenario: delete BA user profile for 201 test
+  Scenario: delete BA user profile
     Given a request to "delete user profile" api on service "user microservice"
     And "x-channel-id" header is "BANKING_APP"
     And "Authorization" header is "Basic b3BlcmF0aW9uQW5hbHlzdDowcGVyYXRpMG5BbmFseXN0"
-    And "userEmail" is "bankingappuser1000@test.com" as STRING
+    And "userEmail" is "get200@test.com" as STRING
     And "channelId" is "BANKING_APP" as STRING
     And package prepared data
     And "POST" request is sent to remove user
     And the status code will be "200"
-
-  @severity=normal
-  @issue=NC-2838
-  @happyCase
-  Scenario: delete MA user profile for 201 test
-    Given a request to "delete user profile" api on service "user microservice"
-    And "x-channel-id" header is "MONEY_APP"
-    And "Authorization" header is "Basic b3BlcmF0aW9uQW5hbHlzdDowcGVyYXRpMG5BbmFseXN0"
-    And "userEmail" is "moneyappuser1000@test.com" as STRING
-    And "channelId" is "MONEY_APP" as STRING
-    And package prepared data
-    And "POST" request is sent to remove user
-    And the status code will be "200"  
     
     
-    
-
-
- 

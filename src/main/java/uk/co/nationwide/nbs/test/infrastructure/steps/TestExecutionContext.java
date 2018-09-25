@@ -60,8 +60,11 @@ public class TestExecutionContext {
     private ValidatableResponse setResponseSpecification;
     private Map<String, Object> requestBodyPayload = new HashMap<>();
     private JSONObject requestBodyPayloadJson;
-    //header var
-    private Header header;
+    
+    //Header values
+    private Header channelHeader = null;
+    private Header authHeader = null;
+    
     private String artiJsonFile = "";
     private static DesiredCapabilities Caps;
     private DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -191,13 +194,28 @@ public class TestExecutionContext {
         return requestBodyPayloadJson;
     }
 
+    
+    //////////////////////////////////////////////////////SET HEADERS/////////////////////////////////////////////////
+    
     //method to get header value
-	public Header getHeader() {
-		return header;
+	public Header getChannelHeader() {
+		return channelHeader;
 	}
 
 	//method to set header value
-	public void setHeader(Header header) {
-		this.header = header;
+	public void setChannelHeader(Header channelHeader) {
+		this.channelHeader = channelHeader;
 	}
+
+	//method to return the basic auth code
+	public Header getAuthHeader() {
+		return authHeader;
+	}
+
+	//method to set the basic auth code
+	public void setAuthHeader(Header authHeader) {
+		this.authHeader = authHeader;
+	}
+	
+	
 }

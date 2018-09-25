@@ -16,35 +16,70 @@
 #""
 ## (Comments)
 #Sample Feature Definition Template
-@APIuser
+@api
 Feature: verify 409 Response codes
+
+ Thomas_NC-2838
+ ajerthan/settingsxml-edited-online-with-bitbucket-1534954387748
 
 	Background:
 		Given a request to "post user" api on service "user microservice"
+		
+		
+	@severity=normal
+  @issue=NC-2838ß
+  Scenario: create user to test 409 Response for BA user
+    Given a request to "post user" api on service "user microservice"
     And "x-channel-id" header is "BANKING_APP"
+    When "customerNumber" is "9999911111" as STRING
+    And "firstName" is "TestForename" as STRING
+    And "lastName" is "TestSurname" as STRING
+    And "email" is "createuserfor409ba@test.com" as STRING
+    And "channelId" is "BANKING_APP" as STRING
+    And package prepared data
+    And "POST" request is sent to user endpoint
+    And the status code will be "201"
+   
+
+  @severity=normal
+  @issue=NC-2838
+  Scenario: create user to test 409 Response for MA user
+    Given a request to "post user" api on service "user microservice"
+    And "x-channel-id" header is "MONEY_APP"
+    And "firstName" is "TestForename" as STRING
+    And "lastName" is "TestSurname" as STRING
+    And "email" is "createuserfor409ma@test.com" as STRING
+    And "channelId" is "MONEY_APP" as STRING
+    And package prepared data
+    And "POST" request is sent to user endpoint
+    And the status code will be "201"
+		
+		
 
   @severity=normal @issue=NC-2838
   Scenario: Verify 409 Response when duplicate BANKING_APP customerNumber is used
     And "x-channel-id" header is "BANKING_APP"
-    When "customerNumber" is "9879879871" as STRING
-    And "firstName" is "TestForename" as STRING
-    And "lastName" is "TestSurname" as STRING
-    And "email" is "test@test.com" as STRING
+    When "customerNumber" is "9999911111" as STRING
+    And "firstName" is "Thomas" as STRING
+    And "lastName" is "G" as STRING
+    And "email" is "user@test.com" as STRING
+    And "channelId" is "BANKING_APP" as STRING
     And package prepared data
-    And "POST" request is sent
+ 		And "POST" request is sent to user endpoint
     And the status code will be "409"
-    And error validation message is "The specified resource already exists"
+    And error validation message is "User already exists"
     
   @severity=normal @issue=NC-2838
   Scenario: Verify 409 Response when duplicate MONEY_APP user is used
  		And "x-channel-id" header is "MONEY_APP"
     And "firstName" is "TestForename" as STRING
     And "lastName" is "TestSurname" as STRING
-    And "email" is "test@test.com" as STRING
+    And "email" is "createuserfor409ma@test.com" as STRING
+    And "channelId" is "MONEY_APP" as STRING
     And package prepared data
-    And "POST" request is sent
+  	And "POST" request is sent to user endpoint
     And the status code will be "409"
-    And error validation message is "The specified resource already exists"
+    And error validation message is "User already exists"
     
     
    

@@ -16,7 +16,7 @@
 #""
 ## (Comments)
 #Sample Feature Definition Template
-@APIuser
+@api
 Feature: verify 400 Response codes
 
 	Background:
@@ -30,9 +30,9 @@ Feature: verify 400 Response codes
     And "lastName" is "TestSurname" as STRING
     And "email" is "test@test.com" as STRING
     And package prepared data
-    And "POST" request is sent
+  	And "POST" request is sent to user endpoint
     And the status code will be "400"
-    And error validation message is "<add here>"
+    And error validation message is "Unable to complete user registration due to insufficient/invalid fields"
    
     
   @severity=normal @issue=NC-2838
@@ -43,9 +43,9 @@ Feature: verify 400 Response codes
     And "email" is "test@test.com" as STRING
     And "channelId" is "INVALID_APP" as STRING
     And package prepared data
-    And "POST" request is sent
+  	And "POST" request is sent to user endpoint
     And the status code will be "400"
-    And error validation message is "<add here>"
+    And error validation message is "Unable to complete user registration due to insufficient/invalid fields"
   
   @severity=normal @issue=NC-2838
   Scenario: 400 when channel id is banking app and customer number fails validation
@@ -55,9 +55,9 @@ Feature: verify 400 Response codes
     And "email" is "test@test.com" as STRING
     And "channelId" is "BANKING_APP" as STRING
     And package prepared data
-    And "POST" request is sent
+  	And "POST" request is sent to user endpoint
     And the status code will be "400"
-    And error validation message is "<add here>"
+    And error validation message is "Unable to complete user registration due to insufficient/invalid fields"
   
   @severity=normal @issue=NC-2838
   Scenario: 400 when channel id is money app, first name fails validation
@@ -66,9 +66,9 @@ Feature: verify 400 Response codes
     And "email" is "test@test.com" as STRING
     And "channelId" is "MONEY_APP" as STRING
     And package prepared data
-    And "POST" request is sent
+ 		And "POST" request is sent to user endpoint
     And the status code will be "400"
-    And error validation message is "<add here>"
+    And error validation message is "x-channel-id in header doesn't match with channelId in body"
   
   
   @severity=normal @issue=NC-2838
@@ -78,17 +78,17 @@ Feature: verify 400 Response codes
     And "email" is "test@test.com" as STRING
     And "channelId" is "MONEY_APP" as STRING
     And package prepared data
-    And "POST" request is sent
+		And "POST" request is sent to user endpoint
     And the status code will be "400"
-    And error validation message is "<add here>"
+    And error validation message is "x-channel-id in header doesn't match with channelId in body"
   
   @severity=normal @issue=NC-2838
   Scenario: 400 when channel id is not provided or (email, firstName & lastName)
    	And "channelId" is "MONEY_APP" as STRING
     And package prepared data
-    And "POST" request is sent
+		And "POST" request is sent to user endpoint
     And the status code will be "400"
-    And error validation message is "<add here>"
+    And error validation message is "x-channel-id in header doesn't match with channelId in body"
   
   
   

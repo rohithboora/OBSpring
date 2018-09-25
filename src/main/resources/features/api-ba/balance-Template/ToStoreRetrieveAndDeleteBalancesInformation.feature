@@ -1,4 +1,4 @@
-@api
+@demo
 Feature: Provide possibility to store and retrieve and delete balance information
 
   @severity=normal

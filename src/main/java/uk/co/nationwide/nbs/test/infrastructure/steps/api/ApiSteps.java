@@ -5,6 +5,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import io.restassured.http.Header;
 import io.restassured.module.jsv.JsonSchemaValidator;
 //import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.parsing.Parser;
@@ -56,10 +57,10 @@ public class ApiSteps extends AbstractStep {
         this.defineHttpParameter(name, value);
     }
     
-    @And("^\"([^\"]*)\" header is \"([^\"]*)\"$")
-    public void something_header_is_something(String name, String value) throws Throwable {
-    	 this.defineHttpHeader(name, value);
-    }
+//    @And("^\"([^\"]*)\" header is \"([^\"]*)\"$")
+//    public void something_header_is_something(String name, String value) throws Throwable {
+//    	 this.defineHttpHeader(name, value);
+//    }
 
 //    @And("^the payload is$")
 //    public void thePayloadIs(String payload) {
@@ -116,46 +117,7 @@ public class ApiSteps extends AbstractStep {
         }
     }
     
-    /*
-     *Added this method so we can pass body request an array
-     */
-    
-    @When("^\"([^\"]*)\" request is sent as$")
-    public void request_is_sent(String method, DataTable type)  {
-        JSONArray arrayObject = new JSONArray();
-        arrayObject.add(this.getHttpRequestBodyPayloadJson());
-        logger.info(arrayObject);
-        List<String> list = type.asList(String.class);
-        String call = list.get(0);
-        switch (method) {
-            case "POST":
-            	logger.info("The header value is "+this.getHeader().toString());
-            	if(call.equalsIgnoreCase("JSON")) {
-            		this.response = given().relaxedHTTPSValidation().header(this.getHeader()).contentType("application/json;charset=UTF-16").body(this.getHttpRequestBodyPayloadJson())
-            				.when().post(this.getHttpUrl())
-                            .then().extract().response();
-            	}else {
-            		 this.response = given().relaxedHTTPSValidation().contentType("application/json;charset=UTF-16").body(arrayObject)
-                        .when().post(this.getHttpUrl())
-                        .then().extract().response();
-                this.jsonString = response.asString();
-                this.jsonResponse = response.jsonPath();
-            	}
-                break;
-            case "GET":
-                this.response = requestSpecification().when().get(this.getHttpUrl()).then().extract().response();
-                this.jsonResponse = this.response.jsonPath();
-                break;
-            case "DELETE":
-                this.response = requestSpecification().when().delete(this.getHttpUrl()).then().extract().response();
-                this.jsonResponse = this.response.jsonPath();
-                break;
-            default:
-                throw new IllegalArgumentException("HTTP Request name is incorrect");
-        }
-    }
-    
-
+   
     @Then("^the status code will be \"([^\"]*)\"$")
     public void the_status_code_will_be(int statusCode) {
         assertThat(response.getStatusCode(), is(equalTo(statusCode)));
@@ -257,8 +219,95 @@ public class ApiSteps extends AbstractStep {
     //Step to verify that schema validation is correct
     @And("^schema successfully validated against \"([^\"]*)\"$")
     public void schema_successfully_validated_against_something(String schema) {
+    	logger.info("finding schema "+schema);
     	MatcherAssert.assertThat(this.jsonString, JsonSchemaValidator.matchesJsonSchemaInClasspath(schema));
     }
     
-   
+    
+    //method to send request to the user endpoint
+    @And("^\"([^\"]*)\" request is sent to user endpoint$")
+    public void something_request_is_sent_to_user_endpoint(String requestType) throws Throwable {
+         switch (requestType) {
+             case "POST":
+             		this.response = given().relaxedHTTPSValidation().header(this.getChannelHeader()).contentType("application/json;charset=UTF-16").body(this.getHttpRequestBodyPayloadJson())
+             		.when().post(this.getHttpUrl())
+                    .then().extract().response();
+             		this.jsonString = response.asString();
+                    this.jsonResponse = response.jsonPath();
+                    break;
+          
+             case "GET":
+                 this.response = requestSpecification().header(getChannelHeader()).when().get(this.getHttpUrl()).then().extract().response();
+                 this.jsonString = response.asString();
+                 this.jsonResponse = response.jsonPath();
+                 break;
+             default:
+                 throw new IllegalArgumentException("HTTP Request name is incorrect");
+         }
+    	
+    }
+    
+    //method to set header value of request
+    @And("^\"([^\"]*)\" header is \"([^\"]*)\"$")
+    public void something_header_is_something(String header, String value)  {
+    	switch (header.toLowerCase()) {
+        case "x-channel-id":
+        	Header channelValue = new Header(header,value);
+        	this.setChannelHeader(channelValue);
+            break;
+        case "authorization":
+        	Header authValue = new Header(header,value);
+        	this.setAuthHeader(authValue);
+            break;
+        default:
+        	logger.info("header specified not in the list: "+header);
+            throw new IllegalArgumentException("Header type not recognised");
+    }
+    	
+        
+    }
+    
+   //method to set user as removed from the users collection
+    @And("^\"([^\"]*)\" request is sent to remove user$")
+    public void something_request_is_sent_to_remove_user(String requestType) {
+    switch (requestType.toLowerCase()) {
+    case "post":
+ 		this.response = given().relaxedHTTPSValidation().header(this.getChannelHeader()).header(getAuthHeader()).contentType("application/json;charset=UTF-16").body(this.getHttpRequestBodyPayloadJson())
+ 		.when().post(this.getHttpUrl())
+        .then().extract().response();
+     break;
+    case "delete":
+ 		this.response = given().relaxedHTTPSValidation().header(this.getChannelHeader()).header(getAuthHeader()).contentType("application/json;charset=UTF-16").body(this.getHttpRequestBodyPayloadJson())
+ 		.when().delete(this.getHttpUrl())
+        .then().extract().response();
+ 		 break;
+    default:
+    	logger.info("request type specified not in the list: "+requestType);
+        throw new IllegalArgumentException("Request type type not recognised");
+    }
+    }
+    //method to send request to the user endpoint
+    @And("^\"([^\"]*)\" request is sent to aspsp endpoint$")
+    public void something_request_is_sent_to_aspsp_endpoint(String requestType) throws Throwable {
+         switch (requestType) {
+             case "POST":
+             		this.response = given().relaxedHTTPSValidation().header(this.getChannelHeader()).contentType("application/json;charset=UTF-16").body(this.getHttpRequestBodyPayloadJson())
+             		.when().post(this.getHttpUrl())
+                    .then().extract().response();
+             		this.jsonString = response.asString();
+                    this.jsonResponse = response.jsonPath();
+                    break;
+          
+             case "GET":
+                 this.response = requestSpecification().header(getChannelHeader()).when().get(this.getHttpUrl()).then().extract().response();
+                 this.jsonString = response.asString();
+                 this.jsonResponse = response.jsonPath();
+                 break;
+             default:
+                 throw new IllegalArgumentException("HTTP Request name is incorrect");
+         }
+    	
+    }
+    
+
 }

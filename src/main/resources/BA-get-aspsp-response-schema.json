@@ -1,0 +1,54 @@
+
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "array",
+  "title": "The Root Schema",
+  "items": {
+    "$id": "#/items",
+    "type": "object",
+    "title": "The Items Schema",
+    "required": [
+      "aspspId",
+      "title",
+      "status"
+    ],
+    "properties": {
+      "aspspId": {
+        "$id": "#/items/properties/aspspId",
+        "type": "string",
+        "title": "The Aspspid Schema",
+        "default": "",
+        "examples": [
+          "af55932d-ba7b-4c32-bc14-0cdda4a58731"
+        ],
+        "minLength":36,
+        "maxLength":36,
+        "pattern": "^(.*)$"
+      },
+      "title": {
+        "$id": "#/items/properties/title",
+        "type": "string",
+        "title": "The Title Schema",
+        "default": "",
+        "examples": [
+          "Nationwide"
+        ],
+        "minLength":0,
+        "maxLength":35,
+        "pattern": "^(.*)$"
+      },
+      "status": {
+        "$id": "#/items/properties/status",
+        "type": "string",
+        "title": "The Status Schema",
+        "default": "",
+        "examples": [
+          "ACTIVE"
+        ],
+        "pattern": "^(.*)$"
+      }
+    }
+  }
+}

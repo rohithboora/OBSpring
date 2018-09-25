@@ -1,5 +1,5 @@
 {
-	"delete user profile":"api/deleteUserProfile",
+	"delete user profile":"v1/deleteUserProfile",
 	"set password":"api/auth/setPassword",
 	"account refresh token": "api/getNextAccountForTransactionRefresh",
 	"unlock account refresh": "api/setAccountAsTransactionRefreshFinished",
@@ -59,6 +59,7 @@
 	"retrieve audits":"api/mi/retrieveAllAudit?dateFrom={dateFrom}&dateTo={dateTo}",
 	"mailer Service":"api/sendMail/resetPassword",
 	"health check":"api/healthCheck",
-	"post user":"api/user",
-	"get user":"v1/user?customerNumber={customerNumber}&channelId={channelid}"
+	"post user":"v1/user",
+	"get user":"v1/user?customerNumber={customerNumber}&channelId={channelId}",
+	"get aspsp":"v1/aspsp"
 }

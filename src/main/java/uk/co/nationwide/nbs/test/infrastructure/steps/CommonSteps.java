@@ -31,12 +31,20 @@ public class CommonSteps extends AbstractStep {
     @Given("^A user access \"([^\"]*)\" section of \"([^\"]*)\" application$")
     public void aa_user_access_section_of_application(String section, String application) throws Throwable {
         this.declareApplicationAndSectionUnderTest(application, section);
-        ((JavascriptExecutor) driver).executeScript("window.open();");
+        if (this.driver == null) {
+            this.configureWebDriver();
+        }
         ArrayList<String> listOfActivateTabs = new ArrayList<String>(driver.getWindowHandles());
-        driver.switchTo().window(listOfActivateTabs.get(1));
-        this.getPage().go(application);
-        Dimension d = new Dimension(375, 667);
-        this.getDriver().manage().window().setSize(d);
+        if (listOfActivateTabs.size() > 1) {
+            driver.switchTo().window(listOfActivateTabs.get(1));
+            this.getPage().go(application);
+            Dimension d = new Dimension(375, 667);
+            this.getDriver().manage().window().setSize(d);
+        } else {
+            this.getPage().go(application);
+            Dimension d = new Dimension(375, 667);
+            this.getDriver().manage().window().setSize(d);
+        }
     }
 
 
@@ -49,6 +57,7 @@ public class CommonSteps extends AbstractStep {
         authenticationHelper.enterPassword(driver, password);
         authenticationHelper.loginOnAuthPage(driver);
         driver.navigate().refresh();
+        ((JavascriptExecutor) driver).executeScript("window.open();");
         Thread.sleep(2000);
     }
 

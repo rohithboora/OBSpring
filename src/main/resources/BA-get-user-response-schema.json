@@ -1,0 +1,88 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "channelId",
+    "customerNumber",
+    "status",
+    "lastName",
+    "firstName",
+    "email",
+    "userId"
+  ],
+  "properties": {
+    "channelId": {
+      "$id": "#/properties/channelId",
+      "type": "string",
+      "title": "The Channelid Schema",
+      "default": "",
+      "examples": [
+        "BANKING_APP"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "customerNumber": {
+      "$id": "#/properties/customerNumber",
+      "type": "string",
+      "title": "The Customernumber Schema",
+      "default": "",
+      "examples": [
+        "1923335109"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "status": {
+      "$id": "#/properties/status",
+      "type": "string",
+      "title": "The Status Schema",
+      "default": "",
+      "examples": [
+        "ACTIVE"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "lastName": {
+      "$id": "#/properties/lastName",
+      "type": "string",
+      "title": "The Lastname Schema",
+      "default": "",
+      "examples": [
+        "G"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "firstName": {
+      "$id": "#/properties/firstName",
+      "type": "string",
+      "title": "The Firstname Schema",
+      "default": "",
+      "examples": [
+        "Thomas"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "email": {
+      "$id": "#/properties/email",
+      "type": "string",
+      "title": "The Email Schema",
+      "default": "",
+      "examples": [
+        "user@test.com"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "userId": {
+      "$id": "#/properties/userId",
+      "type": "string",
+      "title": "The Userid Schema",
+      "default": "",
+      "examples": [
+        "vy1PXBxsb"
+      ],
+      "pattern": "^(.*)$"
+    }
+  }
+}

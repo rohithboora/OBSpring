@@ -1,4 +1,4 @@
-@api
+@demo
 Feature: Store balances with empty accountId
 
   @severity=normal

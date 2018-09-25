@@ -1,4 +1,4 @@
-@api
+@demo
 Feature: Provide possibility to store and retrieve recent balance
 
   @severity=normal
